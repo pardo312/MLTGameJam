@@ -7,6 +7,7 @@ public class Puzzle : MonoBehaviour
     [SerializeField]private GameObject tileGameObject;
     private Tile emptyTile;
     private Tile selectedTile;
+    private Vector2 mouseTileRatio =Vector2.zero;
 
     private float offset = 110f;
     private void Start() {
@@ -45,29 +46,38 @@ public class Puzzle : MonoBehaviour
         if(selectedTile!=null)
         {
             Canvas myCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-            Vector2 pos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, Input.mousePosition, myCanvas.worldCamera, out pos);
-            Vector2 centerOfTile = pos + new Vector2(-selectedTile.GetComponent<Image>().rectTransform.rect.width/2,0);
-
+            Vector2 Mousepos;
+            Vector2 Tilepos;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, Input.mousePosition, myCanvas.worldCamera, out Mousepos);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, selectedTile.initPosition, myCanvas.worldCamera, out Tilepos);
+            if(mouseTileRatio==Vector2.zero){
+                mouseTileRatio = Mousepos-Tilepos;
+            }
+            Vector2 currentMouse = myCanvas.transform.TransformPoint(Mousepos-mouseTileRatio);
+            
             Vector2 emptyTilePos = emptyTile.transform.position;
-            Vector2 MousePosition = (Vector2)Input.mousePosition + new Vector2(-selectedTile.GetComponent<Image>().rectTransform.rect.width/2,0);
+            Vector2 CurrentPosition = (Vector2)selectedTile.transform.position;
 
-            Debug.Log("MousePosX: "+MousePosition.x);
+            Debug.Log("CurrentPosition: " + (int)currentMouse.x);
+            // Debug.Log("selectedTile: " + selectedTile.transform.localPosition);
+            // Debug.Log("MousePosX: "+MousePosition.x);
 
             Debug.Log("InitLimitX: "+(int)selectedTile.initPosition.x);
             Debug.Log("EmptyLimitX: "+(int)(emptyTilePos.x));
+            // Debug.Log("InitLimitY: "+(int)selectedTile.initPosition.y);
+            // Debug.Log("EmptyLimitY: "+(int)(emptyTilePos.y));
 
-            if(MousePosition.x <= Mathf.Max(emptyTilePos.x,selectedTile.initPosition.x)
-            && MousePosition.x >= Mathf.Min(emptyTilePos.x,selectedTile.initPosition.x)
-            && MousePosition.y <= Mathf.Max(emptyTilePos.y,selectedTile.initPosition.y)
-            && MousePosition.y >= Mathf.Min(emptyTilePos.y,selectedTile.initPosition.y))
+            if((currentMouse.x <= Mathf.Max(emptyTilePos.x,selectedTile.initPosition.x)
+            && currentMouse.x >= Mathf.Min(emptyTilePos.x,selectedTile.initPosition.x))&&
+            (currentMouse.y <= Mathf.Max(emptyTilePos.y,selectedTile.initPosition.y)
+            && currentMouse.y >= Mathf.Min(emptyTilePos.y,selectedTile.initPosition.y)))
             {     
-                selectedTile.transform.position = myCanvas.transform.TransformPoint(centerOfTile);
+                selectedTile.transform.position = currentMouse;
             }
             
         }
         else{
-
+            mouseTileRatio=Vector2.zero;
         }
     }
 }

@@ -24,6 +24,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if(OnTileReleased !=null)
        {
+            initPosition = transform.position;
             OnTileReleased(this);
        }
     }
