@@ -6,7 +6,8 @@ public class Puzzle : MonoBehaviour
 {
     private int tilesPerLine = 3;
     [SerializeField] private GameObject tileGameObject;
-    private List<GameObject> listOfTiles;
+    [SerializeField] private Texture2D image;
+    private GameObject[,] listOfTiles;
     private Tile emptyTile;
     private Tile selectedTile;
     private Vector2 mouseTileDistance = Vector2.zero;
@@ -15,26 +16,28 @@ public class Puzzle : MonoBehaviour
     private float offset = 110f;
     private void Start()
     {
-        listOfTiles = new List<GameObject>();
         createPuzzleTiles();
     }
     void createPuzzleTiles()
     {
+        listOfTiles = new GameObject[tilesPerLine,tilesPerLine];
+        Texture2D[,] imageSlices = ImageSlicer.GetSlices(image, tilesPerLine);
         for (int col = 0; col < tilesPerLine; col++)
         {
             for (int row = 0; row < tilesPerLine; row++)
             {
                 GameObject tileObject = GameObject.Instantiate(tileGameObject);
-                listOfTiles.Add(tileObject);
+                listOfTiles[row, col] = tileObject;   
+
                 tileObject.transform.parent = this.transform;
                 tileObject.transform.localPosition = new Vector3(row * (100 + offset) - (this.GetComponent<Image>().rectTransform.rect.width / 2), col * (100 + offset) - 320 + offset, 0);
 
-
+                tileObject.GetComponent<RawImage>().texture = imageSlices[row,col];
                 Tile tile = tileObject.GetComponent<Tile>();
                 tile.OnTilePressed += moveTileInput;
                 tile.OnTileReleased += releaseTileInput;
 
-                if (col == 1 && row == tilesPerLine - 2)
+                if (col == 0 && row == tilesPerLine - 1)
                 {
                     tileObject.SetActive(false);
                     emptyTile = tile;
@@ -103,7 +106,6 @@ public class Puzzle : MonoBehaviour
 
     private void ReleaseTile(){
         if(Vector3.Distance(selectedTile.transform.position, selectedTile.initPosition) > 150){
-            Debug.Log("hi");
             //Cambiar empty tile y current tile
             Vector3 emptyTilePosTemp = emptyTile.transform.position;
             emptyTile.transform.position = selectedTile.initPosition;
