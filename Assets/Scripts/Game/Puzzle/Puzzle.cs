@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Puzzle : MonoBehaviour
 {
     private int tilesPerLine = 3;
     [SerializeField] private GameObject tileGameObject;
+    private List<GameObject> listOfTiles;
     private Tile emptyTile;
     private Tile selectedTile;
     private Vector2 mouseTileDistance = Vector2.zero;
     private Vector3 initMousePosition = Vector2.zero;
-
+    private int tileWidth = 210;
     private float offset = 110f;
     private void Start()
     {
+        listOfTiles = new List<GameObject>();
         createPuzzleTiles();
     }
     void createPuzzleTiles()
@@ -22,6 +25,7 @@ public class Puzzle : MonoBehaviour
             for (int row = 0; row < tilesPerLine; row++)
             {
                 GameObject tileObject = GameObject.Instantiate(tileGameObject);
+                listOfTiles.Add(tileObject);
                 tileObject.transform.parent = this.transform;
                 tileObject.transform.localPosition = new Vector3(row * (100 + offset) - (this.GetComponent<Image>().rectTransform.rect.width / 2), col * (100 + offset) - 320 + offset, 0);
 
@@ -30,7 +34,7 @@ public class Puzzle : MonoBehaviour
                 tile.OnTilePressed += moveTileInput;
                 tile.OnTileReleased += releaseTileInput;
 
-                if (col == 0 && row == tilesPerLine - 1)
+                if (col == 1 && row == tilesPerLine - 2)
                 {
                     tileObject.SetActive(false);
                     emptyTile = tile;
@@ -45,6 +49,7 @@ public class Puzzle : MonoBehaviour
     }
     void releaseTileInput(Tile tileToMove)
     {
+        ReleaseTile();
         selectedTile = null;
     }
 
@@ -52,39 +57,60 @@ public class Puzzle : MonoBehaviour
     {
         if (selectedTile != null)
         {
-           
+            if(Vector3.Distance(emptyTile.transform.position, selectedTile.transform.position) < 250 )
+            {
                 Canvas myCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
                 Vector2 Mousepos;
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, Input.mousePosition, myCanvas.worldCamera, out Mousepos);
 
-                mouseTileDistance = (Vector2)initMousePosition - selectedTile.initPosition;
-
-                Vector2 currentTilePosition = myCanvas.transform.TransformPoint(Mousepos - mouseTileDistance);
-
-                Vector2 emptyTilePos = emptyTile.transform.position;
-                Vector2 CurrentPosition = (Vector2)selectedTile.transform.position;
-
-                if ((currentTilePosition.x <= Mathf.Max(emptyTilePos.x, selectedTile.initPosition.x)
-                && currentTilePosition.x >= Mathf.Min(emptyTilePos.x, selectedTile.initPosition.x)) &&
-                (currentTilePosition.y <= Mathf.Max(emptyTilePos.y, selectedTile.initPosition.y)
-                && currentTilePosition.y >= Mathf.Min(emptyTilePos.y, selectedTile.initPosition.y)))
+                mouseTileDistance = initMousePosition - selectedTile.initPosition;
+                Vector2 currentMousePosition = myCanvas.transform.TransformPoint(Mousepos - mouseTileDistance);
+                
+                if(Mathf.Abs(emptyTile.transform.position.x-selectedTile.initPosition.x)>tileWidth/2)
                 {
-                    if (((Vector2)Input.mousePosition - CurrentPosition).x < 70 ||
-                        ((Vector2)Input.mousePosition - CurrentPosition).x > 130)
+                    if(
+                        //Si el bloque esta a la derecha del emptyBlock
+                        (emptyTile.transform.position.x-selectedTile.initPosition.x >0 
+                        && currentMousePosition.x<selectedTile.initPosition.x+tileWidth 
+                        && currentMousePosition.x>=selectedTile.initPosition.x)
+                    ||
+                        //Si el bloque esta a la izquierda del emptyBlock
+                        (emptyTile.transform.position.x-selectedTile.initPosition.x <0 
+                        && currentMousePosition.x>selectedTile.initPosition.x-tileWidth 
+                        && currentMousePosition.x<=selectedTile.initPosition.x))
                     {
-                        selectedTile.transform.position = new Vector3(currentTilePosition.x, selectedTile.transform.position.y, selectedTile.transform.position.z);
-                    }
-                    if (((Vector2)Input.mousePosition - CurrentPosition).y < -35 ||
-                        ((Vector2)Input.mousePosition - CurrentPosition).y > 35)
+                        selectedTile.transform.position= new Vector3(currentMousePosition.x,selectedTile.transform.position.y,selectedTile.transform.position.z);
+                    }   
+                }
+                else if(Mathf.Abs(emptyTile.transform.position.y-selectedTile.initPosition.y)>100){
+                    if(
+                        //Si el bloque esta arriba del emptyBlock
+                        (emptyTile.transform.position.y-selectedTile.initPosition.y >0 
+                        && currentMousePosition.y<selectedTile.initPosition.y+tileWidth 
+                        && currentMousePosition.y>=selectedTile.initPosition.y)
+                    ||
+                        //Si el bloque esta abajo del emptyBlock
+                        (emptyTile.transform.position.y-selectedTile.initPosition.y <0 
+                        && currentMousePosition.y>selectedTile.initPosition.y-tileWidth
+                        && currentMousePosition.y<=selectedTile.initPosition.y))
                     {
-                        selectedTile.transform.position = new Vector3(selectedTile.transform.position.x, currentTilePosition.y, selectedTile.transform.position.z);
+                         selectedTile.transform.position= new Vector3(selectedTile.transform.position.x,currentMousePosition.y,selectedTile.transform.position.z);
                     }
                 }
+            }
         }
-        else
-        {
-            initMousePosition = Vector2.zero;
-            mouseTileDistance = Vector2.zero;
+    }
+
+    private void ReleaseTile(){
+        if(Vector3.Distance(selectedTile.transform.position, selectedTile.initPosition) > 150){
+            Debug.Log("hi");
+            //Cambiar empty tile y current tile
+            Vector3 emptyTilePosTemp = emptyTile.transform.position;
+            emptyTile.transform.position = selectedTile.initPosition;
+            selectedTile.transform.position = emptyTilePosTemp;
+        }
+        else{
+            selectedTile.transform.position = selectedTile.initPosition;
         }
     }
 }

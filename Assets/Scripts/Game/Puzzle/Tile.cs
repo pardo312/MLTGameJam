@@ -8,7 +8,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public event System.Action<Tile> OnTilePressed;
     public event System.Action<Tile> OnTileReleased;
     
-    public Vector2 initPosition;
+    public Vector3 initPosition;
 
     private void Start() {
         initPosition = transform.position;
@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
        if(OnTilePressed !=null)
        {
+            initPosition = transform.position;
             OnTilePressed(this);
        }
     }
@@ -24,7 +25,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if(OnTileReleased !=null)
        {
-            initPosition = transform.position;
             OnTileReleased(this);
        }
     }
