@@ -2,23 +2,27 @@
 
 public class GameStateManager : MonoBehaviour
 {
-    public static GameStateManager instance;
-    public bool isOnTransition;
+    public static GameStateManager instance { get; private set; }
+    [HideInInspector] public bool isOnTransition;
 
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (instance == null)
         {
-            Destroy(this.gameObject);
-            return;
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
-        instance = this;
-        DontDestroyOnLoad( this.gameObject );
+        else
+        {
+            Destroy(gameObject);
+        }
+
 
         initVariables();
     }
-    private void initVariables(){
-        isOnTransition= false;
+    private void initVariables()
+    {
+        isOnTransition = false;
     }
 
 

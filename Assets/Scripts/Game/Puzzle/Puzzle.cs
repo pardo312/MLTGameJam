@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Collections;
 
 public class Puzzle : MonoBehaviour
 {
-    private int tilesPerLine = 5;
+    private int tilesPerLine = 3;
     [SerializeField] private GameObject tileGameObject;
     [SerializeField] private Texture2D image;
     private Tile[,] listOfTiles;
@@ -15,6 +17,7 @@ public class Puzzle : MonoBehaviour
     private float tileWidth = 210;
     private int offset = 110;
     private int maxDistanceFromEmptyTile = 250;
+    private bool puzzleFinished = false;
 
     void OnDisable()
     {
@@ -26,7 +29,7 @@ public class Puzzle : MonoBehaviour
     void OnEnable()
     {
         createPuzzleTiles();
-        randomizePuzzle();
+        
     }
 
     void createPuzzleTiles()
@@ -76,7 +79,6 @@ public class Puzzle : MonoBehaviour
                 tile.listPostion = new Vector2Int(row, col);
                 tile.OnTilePressed += moveTileInput;
                 tile.OnTileReleased += releaseTileInput;
-                tile.id = Random.value;
 
                 listOfTiles[row, col] = tile;
 
@@ -89,8 +91,24 @@ public class Puzzle : MonoBehaviour
         }
         System.Array.Copy(listOfTiles, originallistOfTiles, listOfTiles.Length);
     }
-    void randomizePuzzle()
+    public void randomizePuzzle()
     {
+        List<int> iRandomAlredy = new List<int>();
+        List<int> jRandomAlredy = new List<int>();
+        for (int i = 0; i < tilesPerLine; i++)
+        {
+            for (int j = 0; j < tilesPerLine; j++)
+            {
+                Tile tileToRandomize = listOfTiles[i,j];
+                Vector3 tileToRandomizePos = listOfTiles[i,j].transform.position;
+                int rndI = Random.Range(0,i);
+                int rndJ = Random.Range(0,j);
+                listOfTiles[i,j].transform.position = listOfTiles[rndI,rndJ].transform.position;
+                listOfTiles[i,j] = listOfTiles[rndI,rndJ];
+                listOfTiles[rndI,rndJ].transform.position = tileToRandomizePos;
+                listOfTiles[rndI,rndJ] = tileToRandomize;
+            }
+        }
     }
     void moveTileInput(Tile tileToMove)
     {
@@ -105,25 +123,28 @@ public class Puzzle : MonoBehaviour
 
     private void Update()
     {
-        manageSelectedTile();
-        if (checkIfWinGame())
+        if (puzzleFinished)
         {
             Debug.Log("Puzzle solved");
+            puzzleFinished=false;
+        }
+        else
+        {
+            manageSelectedTile();
+            checkIfWinGame();
         }
     }
-    private bool checkIfWinGame()
+    private void checkIfWinGame()
     {
-        if (originallistOfTiles.Length != listOfTiles.Length)
-            return false;
         for (int i = 0; i < tilesPerLine; i++)
         {
             for (int j = 0; j < tilesPerLine; j++)
             {
                 if (originallistOfTiles[i, j] != listOfTiles[i, j])
-                    return false;
+                    return;
             }
         }
-        return true;
+        puzzleFinished = true;
     }
     private void manageSelectedTile()
     {

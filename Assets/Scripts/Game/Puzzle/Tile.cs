@@ -8,7 +8,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public event System.Action<Tile> OnTilePressed;
     public event System.Action<Tile> OnTileReleased;
     
-    public float id;
     public Vector3 initPosition;
     public Vector2Int listPostion;
 
