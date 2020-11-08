@@ -29,7 +29,6 @@ public class Puzzle : MonoBehaviour
     void OnEnable()
     {
         createPuzzleTiles();
-        
     }
 
     void createPuzzleTiles()
@@ -37,9 +36,9 @@ public class Puzzle : MonoBehaviour
         listOfTiles = new Tile[tilesPerLine, tilesPerLine];
         originallistOfTiles = new Tile[tilesPerLine, tilesPerLine];
         Texture2D[,] imageSlices = ImageSlicer.GetSlices(image, tilesPerLine);
-        for (int col = 0; col < tilesPerLine; col++)
+        for (int row = 0; row < tilesPerLine; row++)
         {
-            for (int row = 0; row < tilesPerLine; row++)
+            for (int col = 0; col < tilesPerLine; col++)
             {
                 GameObject tileObject = GameObject.Instantiate(tileGameObject);
                 tileObject.transform.parent = this.transform;
@@ -90,23 +89,51 @@ public class Puzzle : MonoBehaviour
             }
         }
         System.Array.Copy(listOfTiles, originallistOfTiles, listOfTiles.Length);
+        randomizePuzzle();
     }
     public void randomizePuzzle()
     {
         List<int> iRandomAlredy = new List<int>();
         List<int> jRandomAlredy = new List<int>();
-        for (int i = 0; i < tilesPerLine; i++)
+        for (int nmoOfShuffle = 0; nmoOfShuffle < 100; nmoOfShuffle++)
         {
-            for (int j = 0; j < tilesPerLine; j++)
+            Tile tileToChange = null;
+            int iORj = Random.Range(0, 2);
+            int moreORLess = Random.Range(0, 2);
+            
+            if (iORj == 0)
             {
-                Tile tileToRandomize = listOfTiles[i,j];
-                Vector3 tileToRandomizePos = listOfTiles[i,j].transform.position;
-                int rndI = Random.Range(0,i);
-                int rndJ = Random.Range(0,j);
-                listOfTiles[i,j].transform.position = listOfTiles[rndI,rndJ].transform.position;
-                listOfTiles[i,j] = listOfTiles[rndI,rndJ];
-                listOfTiles[rndI,rndJ].transform.position = tileToRandomizePos;
-                listOfTiles[rndI,rndJ] = tileToRandomize;
+                if (emptyTile.listPostion.x < tilesPerLine - 1 && moreORLess == 1)
+                    tileToChange = listOfTiles[emptyTile.listPostion.x + 1, emptyTile.listPostion.y];
+                else if (emptyTile.listPostion.x > 0 && moreORLess == 0)
+                    tileToChange = listOfTiles[emptyTile.listPostion.x - 1, emptyTile.listPostion.y];
+            }
+            else
+            {
+                if (emptyTile.listPostion.y < tilesPerLine - 1 && moreORLess == 1)
+                    tileToChange = listOfTiles[emptyTile.listPostion.x, emptyTile.listPostion.y + 1];
+                else if (emptyTile.listPostion.y > 0 && moreORLess == 0)
+                    tileToChange = listOfTiles[emptyTile.listPostion.x, emptyTile.listPostion.y - 1];
+            }
+            if (tileToChange)
+            {
+                //Cambiar empty tile y current tile
+                Vector3 emptyTilePosTemp = emptyTile.transform.position;
+                emptyTile.transform.position = tileToChange.transform.position;
+                tileToChange.transform.position = emptyTilePosTemp;
+
+                //Temporal Variables
+                Tile tempTileToChange = listOfTiles[tileToChange.listPostion.x, tileToChange.listPostion.y];
+                Vector2Int tileToChangeListPosition = tileToChange.listPostion;
+                Tile tempEmptyTile = listOfTiles[emptyTile.listPostion.x, emptyTile.listPostion.y];
+                Vector2Int emptyTileListPosition = emptyTile.listPostion;
+
+                //Cambia tileToChange por empty
+                listOfTiles[tileToChange.listPostion.x, tileToChange.listPostion.y] = tempEmptyTile;
+                tileToChange.listPostion = emptyTileListPosition;
+                //Cambia empty por tileToChange
+                listOfTiles[emptyTile.listPostion.x, emptyTile.listPostion.y] = tempTileToChange;
+                emptyTile.listPostion = tileToChangeListPosition;
             }
         }
     }
@@ -126,7 +153,7 @@ public class Puzzle : MonoBehaviour
         if (puzzleFinished)
         {
             Debug.Log("Puzzle solved");
-            puzzleFinished=false;
+            puzzleFinished = false;
         }
         else
         {
@@ -140,8 +167,13 @@ public class Puzzle : MonoBehaviour
         {
             for (int j = 0; j < tilesPerLine; j++)
             {
-                if (originallistOfTiles[i, j] != listOfTiles[i, j])
+                if (originallistOfTiles[i, j].listPostion != listOfTiles[i, j].listPostion)
+                {
+                    // Debug.Log("OG:" + originallistOfTiles[i, j].listPostion);
+                    // Debug.Log("New:" + listOfTiles[i, j].listPostion);
+                    // Debug.Log("ij:" + i + "," + j);
                     return;
+                }
             }
         }
         puzzleFinished = true;
@@ -205,13 +237,15 @@ public class Puzzle : MonoBehaviour
 
             //Intercambiarlos en la lista de tiles
             Tile tempSelectedTile = listOfTiles[selectedTile.listPostion.x, selectedTile.listPostion.y];
-
+            Vector2Int selectedTileListPosition = selectedTile.listPostion;
             Tile tempEmptyTile = listOfTiles[emptyTile.listPostion.x, emptyTile.listPostion.y];
 
-                //Cambia selected por empty
+            //Cambia selected por empty
             listOfTiles[selectedTile.listPostion.x, selectedTile.listPostion.y] = tempEmptyTile;
-                //Cambia selected por empty
+            selectedTile.listPostion = emptyTile.listPostion;
+            //Cambia selected por empty
             listOfTiles[emptyTile.listPostion.x, emptyTile.listPostion.y] = tempSelectedTile;
+            emptyTile.listPostion = selectedTileListPosition;
         }
         else
         {
