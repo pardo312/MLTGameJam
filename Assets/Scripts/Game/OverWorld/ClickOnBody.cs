@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ClickOnBody : MonoBehaviour
 {
@@ -22,10 +23,12 @@ public class ClickOnBody : MonoBehaviour
         {
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position ,new Vector3(associatedTree.transform.position.x,associatedTree.transform.position.y,-10),Time.deltaTime*transitionSpeed);
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize,3,Time.deltaTime*transitionSpeed);
-            if(Camera.main.orthographicSize<4)
-                puzzleUI.SetActive(true);
+
             if(Camera.main.orthographicSize<3.02)
+            {
                 transitionOn=false;
+                puzzleUI.SetActive(true);
+            }
         }
 
     }
