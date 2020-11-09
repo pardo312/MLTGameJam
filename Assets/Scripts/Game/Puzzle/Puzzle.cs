@@ -230,6 +230,8 @@ public class Puzzle : MonoBehaviour
     {
         if (Vector3.Distance(selectedTile.transform.position, selectedTile.initPosition) > tileWidth / 1.25f)
         {
+            string soundToPlay = "MovePuzzle"+Random.Range(1,4);
+            SoundFXManager.instance.Play(soundToPlay);
             //Cambiar empty tile y current tile
             Vector3 emptyTilePosTemp = emptyTile.transform.position;
             emptyTile.transform.position = selectedTile.initPosition;

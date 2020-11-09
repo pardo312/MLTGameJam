@@ -17,8 +17,11 @@ public class GameStateManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-
+        
         initVariables();
+    }
+    private void Start() {
+        MusicManager.instance.Play("Overworld");
     }
     private void initVariables()
     {
