@@ -5,7 +5,8 @@ using System.Collections;
 
 public class Puzzle : MonoBehaviour
 {
-    private int tilesPerLine = 3;
+    private int tilesPerLine = 4;
+    [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private GameObject tileGameObject;
     [SerializeField] private Texture2D image;
     private Tile[,] listOfTiles;
@@ -46,7 +47,7 @@ public class Puzzle : MonoBehaviour
             for (int col = 0; col < tilesPerLine; col++)
             {
                 GameObject tileObject = GameObject.Instantiate(tileGameObject);
-                tileObject.transform.parent = this.transform;
+                tileObject.transform.SetParent(transform, false);
 
                 //Bad Practice, dont do it ;_v
                 switch (tilesPerLine)
@@ -100,7 +101,7 @@ public class Puzzle : MonoBehaviour
     {
         List<int> iRandomAlredy = new List<int>();
         List<int> jRandomAlredy = new List<int>();
-        for (int nmoOfShuffle = 0; nmoOfShuffle < 100; nmoOfShuffle++)
+        for (int nmoOfShuffle = 0; nmoOfShuffle < 10; nmoOfShuffle++)
         {
             Tile tileToChange = null;
             int iORj = Random.Range(0, 2);
@@ -171,19 +172,20 @@ public class Puzzle : MonoBehaviour
     }
     IEnumerator playSolvedMusic()
     {
-            GameObject puzzleUI = this.transform.parent.parent.gameObject;
-            puzzleUI.GetComponent<Animator>().SetBool("PuzzleStart",false);
-            puzzleUI.GetComponent<Animator>().SetBool("PuzzleSolved",true);
+        GameObject puzzleUI = this.transform.parent.parent.gameObject;
+        puzzleUI.GetComponent<Animator>().SetBool("PuzzleStart",false);
+        puzzleUI.GetComponent<Animator>().SetBool("PuzzleSolved",true);
 
-            MusicManager.instance.StopPlayingAll();
-            SoundFXManager.instance.Play("PuzzleSolvedOST");
-            puzzleFinishedInit=false;
+        MusicManager.instance.StopPlayingAll();
+        SoundFXManager.instance.Play("PuzzleSolvedOST");
+        puzzleFinishedInit=false;
 
-            yield return new WaitForSeconds(4);
-        
-            puzzleUI.SetActive(false);
-            GameObject.Find("Canvas").GetComponent<Canvas>().GetComponent<BackFromPuzzle>().backFromPuzzle();
-            MusicManager.instance.Play("Overworld");
+        GameObject.FindGameObjectWithTag($"Tree{gameStateManager.currentTree}").GetComponent<Animator>().enabled = true;
+        yield return new WaitForSeconds(8);
+
+        puzzleUI.SetActive(false);
+        GameObject.Find("Canvas").GetComponent<Canvas>().GetComponent<BackFromPuzzle>().backFromPuzzle();
+        MusicManager.instance.Play("Overworld");
     }
     private void checkIfWinGame()
     {
