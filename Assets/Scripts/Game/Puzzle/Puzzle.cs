@@ -6,7 +6,7 @@ using System.Collections;
 public class Puzzle : MonoBehaviour
 {
     private int tilesPerLine = 3;
-    [SerializeField] private GameStateManager gameStateManager;
+    [SerializeField]private GameObject backButton;
     [SerializeField] private GameObject tileGameObject;
     [SerializeField] private Texture2D image;
     private Tile[,] listOfTiles;
@@ -25,16 +25,33 @@ public class Puzzle : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            Destroy(child.gameObject);
+            if(!child.name.Equals("ContinueButton"))
+                Destroy(child.gameObject);
         }
     }
     void OnEnable()
     {
+        GameStateManager gsm = GameObject.Find("GameStateManager").GetComponent<GameStateManager>();
+        if(gsm.currentTree==1){
+            tilesPerLine=3;
+        }
+        else
+        {
+            tilesPerLine=4;   
+        }
         GameObject puzzleUI = this.transform.parent.parent.gameObject;
         puzzleUI.GetComponent<Animator>().SetBool("PuzzleStart",true);
         puzzleUI.GetComponent<Animator>().SetBool("PuzzleSolved",false);
         puzzleFinished=false;
         createPuzzleTiles();
+        if(!gsm.treeAlredySolved[gsm.currentTree-1]){
+            randomizePuzzle();
+        }
+        else{
+            emptyTile.gameObject.SetActive(true);
+            puzzleFinished=true;
+            puzzleFinishedInit=false;
+        }
     }
 
     void createPuzzleTiles()
@@ -95,7 +112,6 @@ public class Puzzle : MonoBehaviour
             }
         }
         System.Array.Copy(listOfTiles, originallistOfTiles, listOfTiles.Length);
-        randomizePuzzle();
     }
     public void randomizePuzzle()
     {
@@ -160,8 +176,14 @@ public class Puzzle : MonoBehaviour
         {
             if(puzzleFinishedInit)
             {
-                StartCoroutine(playSolvedMusic());
+                GameStateManager gsm = GameObject.Find("GameStateManager").GetComponent<GameStateManager>();
+                gsm.treeAlredySolved[gsm.currentTree-1] = true;
+                emptyTile.gameObject.SetActive(true);
+                MusicManager.instance.StopPlayingAll();
+                SoundFXManager.instance.Play("PuzzleSolvedOST");
+                puzzleFinishedInit=false;
                 Debug.Log("PuzzleSolved");
+                backButton.SetActive(false);
             }
         }
         else
@@ -169,29 +191,6 @@ public class Puzzle : MonoBehaviour
             manageSelectedTile();
             checkIfWinGame();
         }
-    }
-    IEnumerator playSolvedMusic()
-    {
-        GameObject puzzleUI = this.transform.parent.parent.gameObject;
-        puzzleUI.GetComponent<Animator>().SetBool("PuzzleStart",false);
-        puzzleUI.GetComponent<Animator>().SetBool("PuzzleSolved",true);
-
-        MusicManager.instance.StopPlayingAll();
-        SoundFXManager.instance.Play("PuzzleSolvedOST");
-        puzzleFinishedInit=false;
-
-        yield return new WaitForSeconds(2);
-
-        GameObject.FindGameObjectWithTag($"Tree{gameStateManager.currentTree}").GetComponent<Animator>().enabled = true;
-        
-        yield return new WaitForSeconds(1);
-        MusicManager.instance.Play($"TreeGrow{gameStateManager.currentTree}");
-
-        yield return new WaitForSeconds(8);
-
-        puzzleUI.SetActive(false);
-        GameObject.Find("Canvas").GetComponent<Canvas>().GetComponent<BackFromPuzzle>().backFromPuzzle();
-        MusicManager.instance.Play("Overworld");
     }
     private void checkIfWinGame()
     {
@@ -207,7 +206,6 @@ public class Puzzle : MonoBehaviour
         }
         puzzleFinishedInit=true;
         puzzleFinished = true;
-        tilesPerLine++;
     }
     private void manageSelectedTile()
     {
