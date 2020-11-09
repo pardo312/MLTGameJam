@@ -1,4 +1,4 @@
 ﻿public enum SceneName
 {
-    OverWorld1
+    OverWorld
 }

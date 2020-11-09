@@ -17,6 +17,7 @@ public class Puzzle : MonoBehaviour
     private float tileWidth = 210;
     private int offset = 110;
     private int maxDistanceFromEmptyTile = 250;
+    private bool puzzleFinishedInit = false;
     private bool puzzleFinished = false;
 
     void OnDisable()
@@ -152,14 +153,26 @@ public class Puzzle : MonoBehaviour
     {
         if (puzzleFinished)
         {
-            Debug.Log("Puzzle solved");
-            puzzleFinished = false;
+            if(puzzleFinishedInit)
+            {
+                StartCoroutine(playSolvedMusic());
+                Debug.Log("PuzzleSolved");
+            }
+            
         }
         else
         {
             manageSelectedTile();
             checkIfWinGame();
         }
+    }
+    IEnumerator playSolvedMusic()
+    {
+            MusicManager.instance.StopPlayingAll();
+            SoundFXManager.instance.Play("PuzzleSolvedOST");
+            puzzleFinishedInit=false;
+            yield return new WaitForSeconds(2);
+            MusicManager.instance.Play("Overworld");
     }
     private void checkIfWinGame()
     {
@@ -169,13 +182,11 @@ public class Puzzle : MonoBehaviour
             {
                 if (originallistOfTiles[i, j].listPostion != listOfTiles[i, j].listPostion)
                 {
-                    // Debug.Log("OG:" + originallistOfTiles[i, j].listPostion);
-                    // Debug.Log("New:" + listOfTiles[i, j].listPostion);
-                    // Debug.Log("ij:" + i + "," + j);
                     return;
                 }
             }
         }
+        puzzleFinishedInit=true;
         puzzleFinished = true;
     }
     private void manageSelectedTile()

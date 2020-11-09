@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour
     /// </summary>
     public void HandlePlayButtonOnClickEvent()
     {
-        SceneManager.LoadScene(SceneName.OverWorld1.ToString());
+        SceneManager.LoadScene(SceneName.OverWorld.ToString());
     }
 
     /// <summary>

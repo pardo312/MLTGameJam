@@ -21,6 +21,7 @@ public class GameStateManager : MonoBehaviour
         initVariables();
     }
     private void Start() {
+        MusicManager.instance.StopPlayingAll();
         MusicManager.instance.Play("Overworld");
     }
     private void initVariables()
