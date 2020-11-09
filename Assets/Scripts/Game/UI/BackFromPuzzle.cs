@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BackFromPuzzle : MonoBehaviour
 {
+    [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private GameObject mainTree;
     [SerializeField] private GameObject puzzleUI;
     private int transitionSpeed = 1;
@@ -11,14 +12,14 @@ public class BackFromPuzzle : MonoBehaviour
     // Update is called once per frame
     public void backFromPuzzle()
     {
-        if (GameStateManager.instance.isOnTransition == false)
+        if (gameStateManager.isOnTransition == false)
             initBackFromPuzzle = true;
     }
     private void Update()
     {
         if (initBackFromPuzzle)
         {
-            GameStateManager.instance.isOnTransition = true;
+            gameStateManager.isOnTransition = true;
             puzzleUI.SetActive(false);
 
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(mainTree.transform.position.x, mainTree.transform.position.y, -10), Time.deltaTime * transitionSpeed);
@@ -27,7 +28,7 @@ public class BackFromPuzzle : MonoBehaviour
             if (Camera.main.orthographicSize > 4.9f)
             {
                 initBackFromPuzzle = false;
-                GameStateManager.instance.isOnTransition = false;
+                gameStateManager.isOnTransition = false;
             }
         }
     }
