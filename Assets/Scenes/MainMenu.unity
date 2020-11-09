@@ -688,7 +688,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: ButtonSound
     clip: {fileID: 8300000, guid: c82c8f0e0c465924d8a2faedd559d509, type: 3}
-    volume: 0.2
+    volume: 1
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0
@@ -697,9 +697,9 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: PuzzleSolvedOST
     clip: {fileID: 8300000, guid: 07abfb0c588d0794fb2ba40e99aa58e7, type: 3}
-    volume: 1
+    volume: 0.7
     volumeVariance: 0
-    pitch: 1
+    pitch: 2
     pitchVariance: 0
     loop: 0
     mixerGroup: {fileID: 24300002, guid: 9b2b8d88d5683d846b1cc47ed825be08, type: 2}
