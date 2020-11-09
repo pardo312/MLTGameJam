@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78be40daa75139b4aab5d5b1eca08fb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameStateManager: {fileID: 1320207904}
+  backButton: {fileID: 0}
   tileGameObject: {fileID: 3447245355205410827, guid: 1821b714a5d18fc4fb98e2c3fb2f3866, type: 3}
   image: {fileID: 2800000, guid: 1c376d2f6c92e63408d8ad904bf30b4e, type: 3}
 --- !u!222 &112220142
@@ -2201,6 +2201,7 @@ MonoBehaviour:
   isOnTransition: 0
   fadeAnim: {fileID: 1452271324}
   currentTree: 0
+  treeAlredySolved: 
 --- !u!4 &1320207905
 Transform:
   m_ObjectHideFlags: 0
