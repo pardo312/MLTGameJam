@@ -5,7 +5,7 @@ using System.Collections;
 
 public class Puzzle : MonoBehaviour
 {
-    private int tilesPerLine = 4;
+    private int tilesPerLine = 3;
     [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private GameObject tileGameObject;
     [SerializeField] private Texture2D image;
@@ -207,6 +207,7 @@ public class Puzzle : MonoBehaviour
         }
         puzzleFinishedInit=true;
         puzzleFinished = true;
+        tilesPerLine++;
     }
     private void manageSelectedTile()
     {
