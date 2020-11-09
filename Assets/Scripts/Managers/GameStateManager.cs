@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -10,11 +11,17 @@ public class GameStateManager : MonoBehaviour
     {        
         initVariables();
     }
-    private void Start() {
-        fadeAnim.SetBool("FadeOut",true);
+    public void PlayBM() {
         MusicManager.instance.StopPlayingAll();
+        StartCoroutine(WaitSeconds());
+    }
+
+    private IEnumerator WaitSeconds()
+    {
+        yield return new WaitForSeconds(0.5f);
         MusicManager.instance.Play("Overworld");
     }
+
     private void initVariables()
     {
         isOnTransition = false;
