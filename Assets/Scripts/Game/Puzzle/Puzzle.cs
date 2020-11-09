@@ -31,8 +31,8 @@ public class Puzzle : MonoBehaviour
     void OnEnable()
     {
         GameObject puzzleUI = this.transform.parent.parent.gameObject;
-        puzzleUI.GetComponent<Animator>().SetBool("PuzzleSolved",false);
         puzzleUI.GetComponent<Animator>().SetBool("PuzzleStart",true);
+        puzzleUI.GetComponent<Animator>().SetBool("PuzzleSolved",false);
         puzzleFinished=false;
         createPuzzleTiles();
     }
@@ -180,7 +180,13 @@ public class Puzzle : MonoBehaviour
         SoundFXManager.instance.Play("PuzzleSolvedOST");
         puzzleFinishedInit=false;
 
+        yield return new WaitForSeconds(2);
+
         GameObject.FindGameObjectWithTag($"Tree{gameStateManager.currentTree}").GetComponent<Animator>().enabled = true;
+        
+        yield return new WaitForSeconds(1);
+        MusicManager.instance.Play($"TreeGrow{gameStateManager.currentTree}");
+
         yield return new WaitForSeconds(8);
 
         puzzleUI.SetActive(false);
