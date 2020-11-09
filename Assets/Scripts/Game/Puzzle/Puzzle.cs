@@ -29,6 +29,10 @@ public class Puzzle : MonoBehaviour
     }
     void OnEnable()
     {
+        GameObject puzzleUI = this.transform.parent.parent.gameObject;
+        puzzleUI.GetComponent<Animator>().SetBool("PuzzleSolved",false);
+        puzzleUI.GetComponent<Animator>().SetBool("PuzzleStart",true);
+        puzzleFinished=false;
         createPuzzleTiles();
     }
 
@@ -96,7 +100,7 @@ public class Puzzle : MonoBehaviour
     {
         List<int> iRandomAlredy = new List<int>();
         List<int> jRandomAlredy = new List<int>();
-        for (int nmoOfShuffle = 0; nmoOfShuffle < 100; nmoOfShuffle++)
+        for (int nmoOfShuffle = 0; nmoOfShuffle < 10; nmoOfShuffle++)
         {
             Tile tileToChange = null;
             int iORj = Random.Range(0, 2);
@@ -158,7 +162,6 @@ public class Puzzle : MonoBehaviour
                 StartCoroutine(playSolvedMusic());
                 Debug.Log("PuzzleSolved");
             }
-            
         }
         else
         {
@@ -168,10 +171,18 @@ public class Puzzle : MonoBehaviour
     }
     IEnumerator playSolvedMusic()
     {
+            GameObject puzzleUI = this.transform.parent.parent.gameObject;
+            puzzleUI.GetComponent<Animator>().SetBool("PuzzleStart",false);
+            puzzleUI.GetComponent<Animator>().SetBool("PuzzleSolved",true);
+
             MusicManager.instance.StopPlayingAll();
             SoundFXManager.instance.Play("PuzzleSolvedOST");
             puzzleFinishedInit=false;
-            yield return new WaitForSeconds(2);
+
+            yield return new WaitForSeconds(4);
+        
+            puzzleUI.SetActive(false);
+            GameObject.Find("Canvas").GetComponent<Canvas>().GetComponent<BackFromPuzzle>().backFromPuzzle();
             MusicManager.instance.Play("Overworld");
     }
     private void checkIfWinGame()

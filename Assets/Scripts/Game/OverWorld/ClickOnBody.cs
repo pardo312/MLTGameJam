@@ -31,6 +31,7 @@ public class ClickOnBody : MonoBehaviour
 
             if (Camera.main.orthographicSize < 3.02)
             {
+                gameStateManager.currentTree = bodyNumber;
                 gameStateManager.isOnTransition = false;
                 transitionOn = false;
                 puzzleUI.SetActive(true);

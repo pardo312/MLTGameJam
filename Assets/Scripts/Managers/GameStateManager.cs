@@ -4,6 +4,7 @@ public class GameStateManager : MonoBehaviour
 {
     [HideInInspector] public bool isOnTransition;
     [SerializeField] private Animator fadeAnim;
+    [HideInInspector] public int currentTree = 1 ;
 
     private void Awake()
     {        
