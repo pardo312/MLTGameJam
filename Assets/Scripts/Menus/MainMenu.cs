@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using TreeEditor;
 
 /// <summary>
 /// Listens for the onClick events for the main menu menu buttons
