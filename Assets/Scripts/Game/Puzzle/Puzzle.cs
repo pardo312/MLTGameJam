@@ -8,7 +8,7 @@ public class Puzzle : MonoBehaviour
     private int tilesPerLine = 3;
     [SerializeField]private GameObject backButton;
     [SerializeField] private GameObject tileGameObject;
-    [SerializeField] private Texture2D image;
+    [SerializeField] private Texture2D[] images;
     private Tile[,] listOfTiles;
     private Tile[,] originallistOfTiles;
     private Tile emptyTile;
@@ -58,7 +58,8 @@ public class Puzzle : MonoBehaviour
     {
         listOfTiles = new Tile[tilesPerLine, tilesPerLine];
         originallistOfTiles = new Tile[tilesPerLine, tilesPerLine];
-        Texture2D[,] imageSlices = ImageSlicer.GetSlices(image, tilesPerLine);
+        GameStateManager gsm = GameObject.Find("GameStateManager").GetComponent<GameStateManager>();
+        Texture2D[,] imageSlices = ImageSlicer.GetSlices(images[gsm.currentTree-1], tilesPerLine);
         for (int row = 0; row < tilesPerLine; row++)
         {
             for (int col = 0; col < tilesPerLine; col++)
@@ -117,7 +118,7 @@ public class Puzzle : MonoBehaviour
     {
         List<int> iRandomAlredy = new List<int>();
         List<int> jRandomAlredy = new List<int>();
-        for (int nmoOfShuffle = 0; nmoOfShuffle < 10; nmoOfShuffle++)
+        for (int nmoOfShuffle = 0; nmoOfShuffle < 100; nmoOfShuffle++)
         {
             Tile tileToChange = null;
             int iORj = Random.Range(0, 2);

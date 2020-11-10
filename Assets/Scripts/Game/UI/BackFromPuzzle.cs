@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BackFromPuzzle : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class BackFromPuzzle : MonoBehaviour
     [SerializeField] private GameObject puzzleUI;
     private int transitionSpeed = 1;
     private bool initBackFromPuzzle = false;
+    [SerializeField] private Animator fadeAnim;
     // Update is called once per frame
     public void backFromPuzzle()
     {
@@ -49,5 +51,9 @@ public class BackFromPuzzle : MonoBehaviour
     IEnumerator endOfTransition(){
         yield return new WaitForSeconds(17);
         gameStateManager.isOnTransition = false;
+        fadeAnim.SetBool("FadeOut",false);
+        fadeAnim.SetBool("FadeIn",true);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("Credits");
     }
 }
