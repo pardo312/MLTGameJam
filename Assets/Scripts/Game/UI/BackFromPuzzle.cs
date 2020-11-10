@@ -17,7 +17,7 @@ public class BackFromPuzzle : MonoBehaviour
 
         if (!gameStateManager.GameFinished())
         {
-            MusicManager.instance.StopPlayingAll();
+            MusicManager.instance.Play("Overworld");
         }
     }
     private void Update()
