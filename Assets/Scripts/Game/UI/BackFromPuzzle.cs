@@ -17,7 +17,7 @@ public class BackFromPuzzle : MonoBehaviour
 
         if (!gameStateManager.GameFinished())
         {
-            MusicManager.instance.Play("Overworld");
+            MusicManager.instance.StopPlayingAll();
         }
     }
     private void Update()
@@ -37,6 +37,9 @@ public class BackFromPuzzle : MonoBehaviour
 
                 if (gameStateManager.GameFinished())
                 {
+                    
+                    MusicManager.instance.StopPlayingAll();
+                    MusicManager.instance.Play("BigTreeGrow");
                     mainTree.GetComponent<Animator>().enabled = true;
                 }
             }
