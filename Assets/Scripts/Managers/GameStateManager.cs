@@ -32,5 +32,14 @@ public class GameStateManager : MonoBehaviour
         isOnTransition = false;
     }
 
+    public bool GameFinished()
+    {
+        bool gameFinished = true;
+        foreach(bool tree in treeAlredySolved)
+        {
+            gameFinished &= tree;
+        }
+        return gameFinished;
+    }
 
 }

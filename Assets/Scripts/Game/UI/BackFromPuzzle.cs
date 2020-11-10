@@ -14,6 +14,11 @@ public class BackFromPuzzle : MonoBehaviour
     {
         if (gameStateManager.isOnTransition == false)
             initBackFromPuzzle = true;
+
+        if (!gameStateManager.GameFinished())
+        {
+            MusicManager.instance.Play("Overworld");
+        }
     }
     private void Update()
     {
@@ -25,10 +30,15 @@ public class BackFromPuzzle : MonoBehaviour
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(mainTree.transform.position.x, mainTree.transform.position.y, -10), Time.deltaTime * transitionSpeed);
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 5, Time.deltaTime * transitionSpeed);
 
-            if (Camera.main.orthographicSize > 4.9f)
+            if (Camera.main.orthographicSize > 4.99f)
             {
                 initBackFromPuzzle = false;
                 gameStateManager.isOnTransition = false;
+
+                if (gameStateManager.GameFinished())
+                {
+                    mainTree.GetComponent<Animator>().enabled = true;
+                }
             }
         }
     }

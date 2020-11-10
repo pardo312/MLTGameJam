@@ -1,5 +1,5 @@
 ﻿public enum SceneName
 {
-    OverWorld,
+    OverWorld2,
     Credits
 }

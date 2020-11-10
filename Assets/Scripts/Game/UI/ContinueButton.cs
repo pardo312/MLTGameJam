@@ -30,7 +30,6 @@ public class ContinueButton : MonoBehaviour
 
         puzzleUI.SetActive(false);
         GameObject.Find("Canvas").GetComponent<Canvas>().GetComponent<BackFromPuzzle>().backFromPuzzle();
-        MusicManager.instance.Play("Overworld");
         backButton.SetActive(true);
     }
 }
