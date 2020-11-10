@@ -37,12 +37,17 @@ public class BackFromPuzzle : MonoBehaviour
 
                 if (gameStateManager.GameFinished())
                 {
-                    
+                    gameStateManager.isOnTransition = true;
                     MusicManager.instance.StopPlayingAll();
                     MusicManager.instance.Play("BigTreeGrow");
                     mainTree.GetComponent<Animator>().enabled = true;
+                    StartCoroutine( endOfTransition());
                 }
             }
         }
+    }
+    IEnumerator endOfTransition(){
+        yield return new WaitForSeconds(17);
+        gameStateManager.isOnTransition = false;
     }
 }
