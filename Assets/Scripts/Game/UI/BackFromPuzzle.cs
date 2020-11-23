@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -49,11 +48,12 @@ public class BackFromPuzzle : MonoBehaviour
         }
     }
     IEnumerator endOfTransition(){
-        yield return new WaitForSeconds(17);
+        yield return new WaitForSeconds(23);
         gameStateManager.isOnTransition = false;
         fadeAnim.SetBool("FadeOut",false);
         fadeAnim.SetBool("FadeIn",true);
         yield return new WaitForSeconds(2);
+        MusicManager.instance.Play("TitleTheme");
         SceneManager.LoadScene("Credits");
     }
 }

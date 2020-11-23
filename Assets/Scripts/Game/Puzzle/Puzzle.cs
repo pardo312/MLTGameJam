@@ -118,7 +118,7 @@ public class Puzzle : MonoBehaviour
     {
         List<int> iRandomAlredy = new List<int>();
         List<int> jRandomAlredy = new List<int>();
-        for (int nmoOfShuffle = 0; nmoOfShuffle < 10; nmoOfShuffle++)
+        for (int nmoOfShuffle = 0; nmoOfShuffle < 100; nmoOfShuffle++)
         {
             Tile tileToChange = null;
             int iORj = Random.Range(0, 2);

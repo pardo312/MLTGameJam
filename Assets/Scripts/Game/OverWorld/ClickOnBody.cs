@@ -11,10 +11,14 @@ public class ClickOnBody : MonoBehaviour
     private int transitionSpeed = 1;
     private GameObject associatedTree;
     private bool transitionOn;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
     private void Start()
     {
         associatedTree = GameObject.Find("Tree" + bodyNumber);
         transitionOn = false;
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     void OnMouseUp()
     {
@@ -38,5 +42,13 @@ public class ClickOnBody : MonoBehaviour
             }
         }
 
+    }
+
+    private void Update()
+    {
+        if (gameStateManager.treeAlredySolved[bodyNumber - 1]){
+            spriteRenderer.color = Color.white;
+            animator.enabled = false;
+        }
     }
 }
