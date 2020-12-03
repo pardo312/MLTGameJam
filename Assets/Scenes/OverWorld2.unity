@@ -350,7 +350,6 @@ GameObject:
   - component: {fileID: 112220139}
   - component: {fileID: 112220141}
   - component: {fileID: 112220142}
-  - component: {fileID: 112220140}
   - component: {fileID: 112220143}
   m_Layer: 5
   m_Name: PuzzleTiles
@@ -368,47 +367,16 @@ RectTransform:
   m_GameObject: {fileID: 112220138}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6596764, y: 0.87960416, z: 1}
-  m_Children:
-  - {fileID: 165788658}
-  m_Father: {fileID: 837105794}
-  m_RootOrder: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 766440314}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.28}
-  m_SizeDelta: {x: 622.38336, y: 620.9782}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 640, y: 360}
+  m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &112220140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112220138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.4811321, g: 0.4788626, b: 0.4788626, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &112220141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,10 +390,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backButton: {fileID: 545004392}
+  continueButton: {fileID: 165788657}
   tileGameObject: {fileID: 3447245355205410827, guid: 1821b714a5d18fc4fb98e2c3fb2f3866, type: 3}
   images:
   - {fileID: 2800000, guid: 73011ef7603b4464bbd88bd2bf52704e, type: 3}
   - {fileID: 2800000, guid: 0b920f5525533a24a9fa01a20b80e4dd, type: 3}
+  puzzleUIAniamator: {fileID: 766440315}
 --- !u!222 &112220142
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -465,7 +435,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &165788658
 RectTransform:
   m_ObjectHideFlags: 0
@@ -475,15 +445,15 @@ RectTransform:
   m_GameObject: {fileID: 165788657}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2050542, y: 1.7053125, z: 2.0228}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 79054414}
-  m_Father: {fileID: 112220139}
+  m_Father: {fileID: 837105794}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 1.0845459, y: -162.92844}
+  m_AnchoredPosition: {x: 0, y: 10}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &165788659
@@ -593,6 +563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameStateManager: {fileID: 1320207904}
   backButton: {fileID: 545004392}
+  puzzleUI: {fileID: 766440313}
 --- !u!1 &238191190
 GameObject:
   m_ObjectHideFlags: 0
@@ -1259,7 +1230,7 @@ RectTransform:
   m_GameObject: {fileID: 545004392}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1.5, z: 2.0228}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1105066150}
   m_Father: {fileID: 837105794}
@@ -1267,7 +1238,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 1.8, y: 12}
+  m_AnchoredPosition: {x: 0, y: 10}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &545004394
@@ -1728,6 +1699,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 837105794}
+  - {fileID: 112220139}
   m_Father: {fileID: 2060190612}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1812,17 +1784,17 @@ RectTransform:
   m_GameObject: {fileID: 837105793}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6025271, y: 1.136875, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 112220139}
+  - {fileID: 165788658}
   - {fileID: 545004393}
   m_Father: {fileID: 766440314}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -5.4, y: 0}
-  m_SizeDelta: {x: 1524.5044, y: -223.71991}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 620, y: 620}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &837105795
 MonoBehaviour:
@@ -4068,7 +4040,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 1280, y: 720}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

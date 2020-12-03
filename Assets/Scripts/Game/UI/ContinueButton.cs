@@ -5,7 +5,8 @@ public class ContinueButton : MonoBehaviour
 {
     
     [SerializeField] private GameStateManager gameStateManager;
-    [SerializeField]private GameObject backButton;
+    [SerializeField] private GameObject backButton;
+    [SerializeField] private GameObject puzzleUI;
     // Update is called once per frame
     public void continueButton()
     {
@@ -14,7 +15,6 @@ public class ContinueButton : MonoBehaviour
     
     IEnumerator playSolvedMusic()
     {
-        GameObject puzzleUI = this.transform.parent.parent.parent.gameObject;
         puzzleUI.GetComponent<Animator>().SetBool("PuzzleStart",false);
         puzzleUI.GetComponent<Animator>().SetBool("PuzzleSolved",true);
         

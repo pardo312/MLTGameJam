@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public event System.Action<Tile> OnTileReleased;
     
     public Vector3 initPosition;
-    public Vector2Int listPostion;
+    public Vector2Int listPosition;
 
     private void Start() {
         initPosition = transform.position;
